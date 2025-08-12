@@ -1,4 +1,3 @@
-
 const TodoCard = ({ title, description, status, onContextMenu }) => {
 
     const statusColors = {

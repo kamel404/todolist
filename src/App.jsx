@@ -1,5 +1,4 @@
-// src/App.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import Column from "./components/Column";
 import TodoCard from "./components/TodoCard";
 import ContextMenu from "./components/ContextMenu";

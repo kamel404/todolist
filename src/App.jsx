@@ -1,21 +1,144 @@
+// src/App.jsx
+import React, { useState } from "react";
+import Column from "./components/Column";
+import TodoCard from "./components/TodoCard";
+import ContextMenu from "./components/ContextMenu";
+import Header from "./components/Header";
 
-const App = () => {
+function App() {
+
+  // Sample starting tasks
+  const [tasks, setTasks] = useState([
+    {
+      id: 1,
+      title: "Setup project",
+      description: "Create Vite + Tailwind base project",
+      status: "new",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 2,
+      title: "Implement Columns",
+      description: "Create reusable Column component",
+      status: "ongoing",
+      movedAt: new Date().toISOString(),
+    },
+    {
+      id: 3,
+      title: "Test Context Menu",
+      description: "Right-click to move tasks between columns",
+      status: "done",
+      completedAt: new Date().toISOString(),
+    },
+  ]);
+
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    taskId: null,
+    status: null,
+  });
+
+  const handleContextMenu = (e, id, status) => {
+    e.preventDefault();
+    setContextMenu({
+      visible: true,
+      x: e.pageX,
+      y: e.pageY,
+      taskId: id,
+      status,
+    });
+  };
+
+  const handleAction = (option) => {
+    const statusMap = {
+      "Move to New": "new",
+      "Move to Ongoing": "ongoing",
+      "Move to Done": "done",
+    };
+
+    const newStatus = statusMap[option];
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id !== contextMenu.taskId) return task;
+
+        const updatedTask = { ...task, status: newStatus };
+
+        if (newStatus === "ongoing") {
+          updatedTask.movedAt = new Date().toISOString();
+        }
+
+        if (newStatus === "done") {
+          updatedTask.completedAt = new Date().toISOString();
+        }
+
+        return updatedTask;
+      })
+    );
+
+    setContextMenu({ ...contextMenu, visible: false });
+  };
+
   return (
-    <div class="flex flex-col items-center p-7 rounded-2xl">
-  <div>
-    <img class="size-48 shadow-xl rounded-md" alt="" src="/img/cover.png" />
-  </div>
-  <div class="flex">
-    <span class="text-2xl font-medium">Class Warfare</span>
-    <span class="font-medium text-sky-500">The Anti-Patterns</span>
-    <span class="flex gap-2 font-medium text-gray-600 dark:text-gray-400">
-      <span>No. 4</span>
-      <span>·</span>
-      <span>2025</span>
-    </span>
-  </div>
-</div>
-  )
+    <div className="h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
+        <Column title="New">
+          {tasks
+            .filter((t) => t.status === "new")
+            .map((task) => (
+              <TodoCard
+                key={task.id}
+                title={task.title}
+                description={task.description}
+                status={task.status}
+                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+              />
+            ))}
+        </Column>
+
+        <Column title="Ongoing">
+          {tasks
+            .filter((t) => t.status === "ongoing")
+            .map((task) => (
+              <TodoCard
+                key={task.id}
+                title={task.title}
+                description={task.description}
+                status={task.status}
+                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+              />
+            ))}
+        </Column>
+
+        <Column title="Done">
+          {tasks
+            .filter((t) => t.status === "done")
+            .map((task) => (
+              <TodoCard
+                key={task.id}
+                title={task.title}
+                description={task.description}
+                status={task.status}
+                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+              />
+            ))}
+        </Column>
+
+      </main>
+      {contextMenu.visible && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          status={contextMenu.status}
+          onClose={() => setContextMenu((prev) => ({ ...prev, visible: false }))}
+          onAction={handleAction}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

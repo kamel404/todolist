@@ -4,6 +4,7 @@ import Column from "./components/Column";
 import TodoCard from "./components/TodoCard";
 import ContextMenu from "./components/ContextMenu";
 import Header from "./components/Header";
+import NewTask from "./components/NewTask";
 
 function App() {
 
@@ -85,7 +86,9 @@ function App() {
     <div className="h-screen flex flex-col">
       <Header />
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-        <Column title="New">
+
+        {/* New Section Column */}
+        <Column title="New" rightElement={<NewTask />}>
           {tasks
             .filter((t) => t.status === "new")
             .map((task) => (
@@ -99,6 +102,7 @@ function App() {
             ))}
         </Column>
 
+        {/* Ongoing Section Column */}
         <Column title="Ongoing">
           {tasks
             .filter((t) => t.status === "ongoing")
@@ -113,6 +117,7 @@ function App() {
             ))}
         </Column>
 
+        {/* Done Section Column */}
         <Column title="Done">
           {tasks
             .filter((t) => t.status === "done")
@@ -128,6 +133,8 @@ function App() {
         </Column>
 
       </main>
+
+      {/* Context Menu Display if visible */}
       {contextMenu.visible && (
         <ContextMenu
           x={contextMenu.x}

@@ -8,29 +8,7 @@ import NewTask from "./components/NewTask";
 function App() {
 
   // Sample starting tasks
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Setup project",
-      description: "Create Vite + Tailwind base project",
-      status: "new",
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      title: "Implement Columns",
-      description: "Create reusable Column component",
-      status: "ongoing",
-      movedAt: new Date().toISOString(),
-    },
-    {
-      id: 3,
-      title: "Test Context Menu",
-      description: "Right-click to move tasks between columns",
-      status: "done",
-      completedAt: new Date().toISOString(),
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
 
   const [contextMenu, setContextMenu] = useState({
     visible: false,
@@ -39,6 +17,18 @@ function App() {
     taskId: null,
     status: null,
   });
+
+  const handleAddTask = (newTask) => {
+    const task = {
+      id: Date.now(),
+      title: newTask.title,
+      description: newTask.description,
+      status: "new",
+      createdAt: new Date().toISOString(),
+    }
+
+    setTasks([...tasks, task]);
+  }
 
   const handleContextMenu = (e, id, status) => {
     e.preventDefault();
@@ -87,7 +77,7 @@ function App() {
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
 
         {/* New Section Column */}
-        <Column title="New" rightElement={<NewTask />}>
+        <Column title="New" rightElement={<NewTask onAddTask={handleAddTask} />}>
           {tasks
             .filter((t) => t.status === "new")
             .map((task) => (

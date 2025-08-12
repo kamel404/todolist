@@ -3,6 +3,19 @@ import { useState } from 'react';
 const NewTask = ({ onAddTask }) => {
 
   const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (title.trim()){
+      onAddTask({title, description});
+      
+      setTitle("");
+      setDescription("");
+      setIsOpen(false);
+    }
+  }
 
   return (
     <div className="flex ">
@@ -22,7 +35,7 @@ const NewTask = ({ onAddTask }) => {
               </button>
             </div>
             
-            <form className="p-4">
+            <form className="p-4" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                   Title
@@ -31,8 +44,10 @@ const NewTask = ({ onAddTask }) => {
                   type="text"
                   id="title"
                   name="title"
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Enter task title"
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               
@@ -46,6 +61,7 @@ const NewTask = ({ onAddTask }) => {
                   rows="3"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Enter task description"
+                  onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
               
@@ -61,7 +77,7 @@ const NewTask = ({ onAddTask }) => {
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
-                  Add Task
+                  Submit
                 </button>
               </div>
             </form>

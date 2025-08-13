@@ -129,9 +129,8 @@ function App() {
     setContextMenu((prev) => ({ ...prev, visible: false }));
   };
 
-  // Allow setting a due time for 'ongoing' tasks
   const handleSetDueAt = (id, dueAt) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, dueAt } : t)));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, dueAt, alerted: false } : t)));
   };
 
   return (

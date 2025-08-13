@@ -1,12 +1,64 @@
-# React + Vite
+# Todo List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and interactive Todo List application built with React, Vite, and Tailwind CSS. This application provides a seamless experience for managing tasks with features like drag-and-drop, due date tracking, and a dark/light theme toggle.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   **Task Management**: Add tasks with a title and an optional description.
+-   **Status Columns**: Organize tasks across three columns: "New", "Ongoing", and "Done".
+-   **Drag & Drop**: Intuitively move tasks between columns to update their status.
+-   **Context Menu**: Right-click a task to quickly move it to another column.
+-   **Due Dates**: Set due dates for "Ongoing" tasks. The application will alert you if a task becomes overdue.
+-   **Theme Toggle**: Switch between a light and dark theme. Your preference is saved in local storage.
+-   **Responsive Design**: A clean and responsive layout that works on various screen sizes.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   **Framework**: [React](https://react.dev/)
+-   **Build Tool**: [Vite](https://vitejs.dev/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **State Management**: React Hooks (`useState`, `useEffect`)
+-   **Linting**: [ESLint](https://eslint.org/)
+
+## Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+-   Node.js (v18 or newer)
+-   npm
+
+### Installation
+
+1.  Clone the repository:
+    ```sh
+    git clone <your-repo-url>
+    ```
+2.  Navigate to the project directory:
+    ```sh
+    cd todolist
+    ```
+3.  Install NPM packages:
+    ```sh
+    npm install
+    ```
+
+### Running the Application
+
+To start the development server, run the following command:
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal) to view it in the browser.
+
+## Available Scripts
+
+In the project directory, you can run:
+
+-   `npm run dev`: Runs the app in development mode with hot-reloading.
+-   `npm run build`: Builds the app for production to the `dist` folder.
+-   `npm run lint`: Lints the code to find and fix problems.
+-   `npm run preview`: Serves the production build locally to preview it.

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Column from "./components/Column";
 import TodoCard from "./components/TodoCard";
 import ContextMenu from "./components/ContextMenu";
@@ -7,7 +7,6 @@ import NewTask from "./components/NewTask";
 
 function App() {
 
-  // Sample starting tasks
   const [tasks, setTasks] = useState([]);
 
   const [contextMenu, setContextMenu] = useState({
@@ -17,6 +16,25 @@ function App() {
     taskId: null,
     status: null,
   });
+
+  // Check for overdue tasks
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      tasks.forEach(task => {
+        if (task.status === 'ongoing' && task.dueAt && new Date(task.dueAt) <= now) {
+          // Check if we've already alerted for this overdue task
+          if (!task.alerted) {
+            alert(`Task "${task.title}" is overdue!`);
+            // Mark that we've alerted for this task to avoid repeated alerts
+            setTasks(prev => prev.map(t => t.id === task.id ? { ...t, alerted: true } : t));
+          }
+        }
+      });
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [tasks]);
 
   const handleAddTask = (newTask) => {
     const task = {
@@ -49,6 +67,7 @@ function App() {
     };
 
     const newStatus = statusMap[option];
+
 
     setTasks((prevTasks) =>
       prevTasks.map((task) => {
@@ -110,6 +129,11 @@ function App() {
     setContextMenu((prev) => ({ ...prev, visible: false }));
   };
 
+  // Allow setting a due time for 'ongoing' tasks
+  const handleSetDueAt = (id, dueAt) => {
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, dueAt } : t)));
+  };
+
   return (
     <div className="h-screen flex flex-col bg-white text-slate-900 dark:bg-black dark:text-slate-200">
       <Header />
@@ -120,6 +144,7 @@ function App() {
           <Column title="New" rightElement={<NewTask onAddTask={handleAddTask} />}>
             {tasks
               .filter((t) => t.status === "new")
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // newest tasks first
               .map((task) => (
                 <TodoCard
                   key={task.id}
@@ -139,6 +164,7 @@ function App() {
           <Column title="Ongoing">
             {tasks
               .filter((t) => t.status === "ongoing")
+              .sort((a, b) => new Date(a.movedAt || 0) - new Date(b.movedAt || 0)) // in order moved
               .map((task) => (
                 <TodoCard
                   key={task.id}
@@ -148,6 +174,8 @@ function App() {
                   status={task.status}
                   onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
                   onDragStart={handleDragStart}
+                  dueAt={task.dueAt}
+                  onSetDueAt={handleSetDueAt}
                 />
               ))}
           </Column>
@@ -158,6 +186,7 @@ function App() {
           <Column title="Done">
             {tasks
               .filter((t) => t.status === "done")
+              .sort((a, b) => new Date(a.completedAt || 0) - new Date(b.completedAt || 0)) // in order completed
               .map((task) => (
                 <TodoCard
                   key={task.id}

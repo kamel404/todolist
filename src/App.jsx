@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Column from "./components/Column";
 import TodoCard from "./components/TodoCard";
 import ContextMenu from "./components/ContextMenu";
@@ -7,7 +7,26 @@ import NewTask from "./components/NewTask";
 
 function App() {
 
-  const [tasks, setTasks] = useState([]);
+  const TASKS_STORAGE_KEY = 'todolist.tasks'
+
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const raw = localStorage.getItem(TASKS_STORAGE_KEY)
+      const parsed = raw ? JSON.parse(raw) : []
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  })
+
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks))
+    } catch {
+      // ignore quota/permission errors
+    }
+  }, [tasks])
 
   const [contextMenu, setContextMenu] = useState({
     visible: false,
@@ -16,6 +35,8 @@ function App() {
     taskId: null,
     status: null,
   });
+
+  
 
   // Check for overdue tasks
   useEffect(() => {

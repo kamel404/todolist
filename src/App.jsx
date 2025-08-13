@@ -111,7 +111,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex flex-col ">
+    <div className="h-screen flex flex-col bg-white text-slate-900 dark:bg-black dark:text-slate-200">
       <Header />
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
 

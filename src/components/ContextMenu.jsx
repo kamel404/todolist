@@ -15,7 +15,7 @@ const ContextMenu = ({ x, y, onClose, onAction, status }) => {
 
   return (
     <div
-      className="absolute bg-slate-900 border border-slate-800 shadow-xl rounded z-50 min-w-40"
+      className="absolute bg-white border border-slate-200 shadow-xl rounded z-50 min-w-40 dark:bg-slate-900 dark:border-slate-800"
       style={{ top: y, left: x }}
     >
       {options[status].map((option) => (

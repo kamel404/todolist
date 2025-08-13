@@ -17,16 +17,16 @@ const TodoCard = ({ title, description, status, id, onContextMenu, onDragStart }
             onContextMenu={onContextMenu}
             draggable
             onDragStart={(e) => onDragStart?.(e, {id, status})}
-            className={`rounded-lg p-3 bg-slate-800 border border-slate-700 hover:border-slate-600 transition-colors cursor-pointer ${accentBorders[status]} border-l-4`}
+            className={`rounded-lg p-3 bg-white border border-slate-200 hover:border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-slate-600 transition-colors cursor-pointer ${accentBorders[status]} border-l-4`}
         >
             <div className='flex justify-between items-center'>
-                <h3 className="font-semibold text-slate-100">{title}</h3>
-                <span className={`text-xs rounded-full px-2 py-0.5 ${badgeClasses[status]}`}>
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
+                <span className={`text-xs rounded-full px-2 py-0.5 ${badgeClasses[status]} dark:${badgeClasses[status]}`}>
                     {status}
                 </span>
             </div>
             {description && (
-                <p className="text-sm text-slate-300 mt-1">{description}</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">{description}</p>
             )}
         </div>
     )

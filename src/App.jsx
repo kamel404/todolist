@@ -71,55 +71,106 @@ function App() {
     setContextMenu({ ...contextMenu, visible: false });
   };
 
+  const handleDragStart = (e, payload) => {
+    // payload = { id, status }
+    e.dataTransfer.setData("application/json", JSON.stringify(payload));
+    e.dataTransfer.effectAllowed = "move";
+    console.log("Drag started:", payload);
+    // hide context menu if open
+    setContextMenu((prev) => ({ ...prev, visible: false }));
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDrop = (e, targetStatus) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("application/json");
+    if (!data) return;
+
+    try {
+      const { id, status: fromStatus } = JSON.parse(data);
+      if (!id || fromStatus === targetStatus) return;
+
+      setTasks((prev) =>
+        prev.map((t) => {
+          if (t.id !== id) return t;
+          const updated = { ...t, status: targetStatus };
+          if (targetStatus === "ongoing") updated.movedAt = new Date().toISOString();
+          if (targetStatus === "done") updated.completedAt = new Date().toISOString();
+          return updated;
+        })
+      );
+    } catch (err) {
+      console.error("Failed to parse drag data", err);
+    }
+
+    setContextMenu((prev) => ({ ...prev, visible: false }));
+  };
+
   return (
     <div className="h-screen flex flex-col">
       <Header />
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
 
         {/* New Section Column */}
-        <Column title="New" rightElement={<NewTask onAddTask={handleAddTask} />}>
-          {tasks
-            .filter((t) => t.status === "new")
-            .map((task) => (
-              <TodoCard
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
-              />
-            ))}
-        </Column>
+        <div onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, "new")}>
+          <Column title="New" rightElement={<NewTask onAddTask={handleAddTask} />}>
+            {tasks
+              .filter((t) => t.status === "new")
+              .map((task) => (
+                <TodoCard
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  description={task.description}
+                  status={task.status}
+                  onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+                  onDragStart={handleDragStart}
+                />
+              ))}
+          </Column>
+        </div>
 
         {/* Ongoing Section Column */}
-        <Column title="Ongoing">
-          {tasks
-            .filter((t) => t.status === "ongoing")
-            .map((task) => (
-              <TodoCard
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
-              />
-            ))}
-        </Column>
+        <div onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, "ongoing")}>
+          <Column title="Ongoing">
+            {tasks
+              .filter((t) => t.status === "ongoing")
+              .map((task) => (
+                <TodoCard
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  description={task.description}
+                  status={task.status}
+                  onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+                  onDragStart={handleDragStart}
+                />
+              ))}
+          </Column>
+        </div>
 
         {/* Done Section Column */}
-        <Column title="Done">
-          {tasks
-            .filter((t) => t.status === "done")
-            .map((task) => (
-              <TodoCard
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
-              />
-            ))}
-        </Column>
+        <div onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, "done")}>
+          <Column title="Done">
+            {tasks
+              .filter((t) => t.status === "done")
+              .map((task) => (
+                <TodoCard
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  description={task.description}
+                  status={task.status}
+                  onContextMenu={(e) => handleContextMenu(e, task.id, task.status)}
+                  onDragStart={handleDragStart}
+                />
+              ))}
+          </Column>
+        </div>
 
       </main>
 

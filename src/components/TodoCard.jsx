@@ -1,4 +1,4 @@
-const TodoCard = ({ title, description, status, onContextMenu }) => {
+const TodoCard = ({ title, description, status, id, onContextMenu, onDragStart }) => {
 
     const statusColors = {
         "new": "bg-blue-400",
@@ -9,6 +9,8 @@ const TodoCard = ({ title, description, status, onContextMenu }) => {
     return (
         <div
             onContextMenu={onContextMenu}
+            draggable
+            onDragStart={(e) => onDragStart?.(e, {id, status})}
             className={` ${statusColors[status]} rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer`}
         >
             <div className='flex justify-between items-center'>

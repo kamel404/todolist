@@ -19,17 +19,17 @@ const NewTask = ({ onAddTask }) => {
 
   return (
     <div className="flex ">
-      <button className='bg-blue-500 text-white px-2 py-1 text-sm rounded hover:bg-blue-600' onClick={() => setIsOpen(!isOpen)}>
+      <button className='bg-blue-600 text-white px-2 py-1 text-sm rounded hover:bg-blue-500' onClick={() => setIsOpen(!isOpen)}>
         + Add Task
       </button>
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-96">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-lg font-medium">Add New Task</h3>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-slate-900 rounded-lg shadow-xl w-96 border border-slate-800">
+            <div className="flex justify-between items-center p-4 border-b border-slate-800">
+              <h3 className="text-lg font-medium text-slate-100">Add New Task</h3>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-slate-400 hover:text-slate-200"
               >
                 ✕
               </button>
@@ -37,7 +37,7 @@ const NewTask = ({ onAddTask }) => {
             
             <form className="p-4" onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="title" className="block text-sm font-medium text-slate-300 mb-1">
                   Title
                 </label>
                 <input
@@ -45,21 +45,21 @@ const NewTask = ({ onAddTask }) => {
                   id="title"
                   name="title"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-400"
                   placeholder="Enter task title"
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               
               <div className="mb-4">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="description" className="block text-sm font-medium text-slate-300 mb-1">
                   Description
                 </label>
                 <textarea
                   id="description"
                   name="description"
                   rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 rounded-md bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-400"
                   placeholder="Enter task description"
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
@@ -68,14 +68,14 @@ const NewTask = ({ onAddTask }) => {
               <div className="flex justify-end space-x-3 pt-3">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+                  className="px-4 py-2 bg-slate-800 text-slate-200 rounded-md border border-slate-700 hover:bg-slate-700"
                   onClick={() => setIsOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500"
                 >
                   Submit
                 </button>

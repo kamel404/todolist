@@ -1,14 +1,16 @@
-
 // I have added the rightElement prop to show add task button beside the title (New only)
-const Column = ({ title, children, rightElement, onDrop, onDragOver }) => {
-
+const Column = ({ title, children, rightElement, onDragOver, onDrop }) => {
     return (
-        <div onDragOver={onDragOver} onDrop={onDrop} className="bg-gray-300 rounded-lg p-4 shadow flex flex-col h-full">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold">{title}</h2>
+        <div
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            className="rounded-lg p-3 shadow flex flex-col bg-slate-900/60 border border-slate-800"
+        >
+            <div className="flex justify-between items-center mb-3">
+                <h2 className="text-sm font-semibold tracking-wide uppercase text-slate-300">{title}</h2>
                 {rightElement}
             </div>
-            <div className="flex flex-col gap-3 overflow-y-auto">
+            <div className="flex flex-col gap-2 overflow-y-auto">
                 {children}
             </div>
         </div>

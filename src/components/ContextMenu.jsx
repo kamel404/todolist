@@ -15,14 +15,14 @@ const ContextMenu = ({ x, y, onClose, onAction, status }) => {
 
   return (
     <div
-      className="absolute bg-white border border-gray-200 shadow-md rounded z-50"
+      className="absolute bg-slate-900 border border-slate-800 shadow-xl rounded z-50 min-w-40"
       style={{ top: y, left: x }}
     >
       {options[status].map((option) => (
         <div
           key={option}
           onClick={() => onAction(option)}
-          className="px-3 py-1 hover:bg-gray-100 cursor-pointer text-sm"
+          className="px-3 py-1.5 hover:bg-slate-800 cursor-pointer text-sm text-slate-200"
         >
           {option}
         </div>
